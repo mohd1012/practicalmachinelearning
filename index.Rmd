@@ -2,8 +2,10 @@
 title       : Practical Machine Learning Course Project
 auther      : Mohd
 subtitle    : Wearable Computing example about Qualitative analysis of Weight Lifting Exercises
-
   
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ## Introduction
@@ -43,7 +45,7 @@ tidy_test_data <- data_testing[,keep_col]
 
 ## removing irrelevant columns (7 ) : X , user_name, ..timestamp .. , new_window ..
 tidy_train_data <- tidy_train_data[,-1*c(1:7)]
-tidy_test_data <- tidy_test_data[,-1*c(1:7)]
+tidy_test_data <- tidy_test_data[,-c(1:7)]
 
 ```
 
@@ -157,3 +159,18 @@ predictors.Imp <- varImp(rf_model, scale = FALSE)
 plot(predictors.Imp, top = 20)
 
 ```
+
+### Predicting the Unknown 20 Test Case  
+
+* The accuracy of prediction from the measured   accuracy is : __accuracy.measured^20__ = `r accuracy.measured^20`  
+* The accuracy of prediction from the estimated  accuracy is : __accuracy.estimation^20__= `r accuracy.estimation^20 ` 
+
+But actually the all the 20 test cases has been correctly classified  
+
+```{r}
+predicted.cases <- predict(rf_model,tidy_test_data[,-length(tidy_test_data)])
+df <- cbind(index = 1:20, class = as.character(predicted.cases))
+library(knitr)
+kable(df, format = "markdown")
+```
+
